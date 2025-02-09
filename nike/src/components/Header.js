@@ -1,9 +1,10 @@
 'use client'
 import Link from "next/link";
-import Search from "./Search";
+import SearchButton  from "./Search";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
+import { ShoppingCart } from "lucide-react";
 
 export default function Header() {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -38,10 +39,10 @@ export default function Header() {
                                 )}
                             </Link>
                         ))}
-                        <div className="flex text-xl space-x-1">
-                            <Search handleClickSearch={handleClickSearch} />
+                        <div className="flex text-xl space-x-1 gap-3">
+                            <SearchButton  handleClickSearch={handleClickSearch} />
                             <Link href='/cart'>
-                                <img className="hover:opacity-75" src="/corzuna.jpg" alt="cart" />
+                                <ShoppingCart />
                             </Link>
                         </div>
                     </nav>

@@ -1,5 +1,10 @@
-export default function Search({handleClickSearch}) {
+import { Search } from "lucide-react";
+
+export default function SearchButton({ handleClickSearch }) {
     return (
-        <img onClick={handleClickSearch} className="hover:opacity-75" src="/search.jpg" />
-    )
+        <Search 
+            onClick={handleClickSearch} 
+            className="hover:opacity-75 cursor-pointer w-6 h-6 text-white" 
+        />
+    );
 }

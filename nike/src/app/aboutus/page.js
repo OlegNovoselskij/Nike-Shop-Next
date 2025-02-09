@@ -1,5 +1,10 @@
+import MainCard from "@/components/AboutUs/MainCard"
+import Reviews from "@/components/AboutUs/Reviews"
 export default function AboutUs() {
     return (
-        <div>About Us</div>
+        <>
+        <MainCard />
+        <Reviews />
+        </>
     )
 }
