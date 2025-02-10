@@ -1,11 +1,11 @@
 'use client'
 import Link from "next/link";
-import SearchButton  from "./Search";
+import SearchButton from "./Search";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { ShoppingCart } from "lucide-react";
-import { Search } from "lucide-react";
+import SearchBar from "./SearchBar";
 
 export default function Header() {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -29,7 +29,7 @@ export default function Header() {
                 {!isSearchOpen ? (
                     <nav className="relative flex space-x-8">
                         {navLinks.map(({ href, label }) => (
-                            <Link key={href} href={href} className="relative font-medium tracking-tight hover:opacity-75  ">
+                            <Link key={href} href={href} className="relative font-medium tracking-tight hover:opacity-75">
                                 {label}
                                 {pathname === href && (
                                     <motion.div
@@ -41,22 +41,14 @@ export default function Header() {
                             </Link>
                         ))}
                         <div className="flex text-xl space-x-1 gap-3">
-                            <SearchButton  handleClickSearch={handleClickSearch} />
+                            <SearchButton handleClickSearch={handleClickSearch} />
                             <Link href='/cart'>
                                 <ShoppingCart />
                             </Link>
                         </div>
                     </nav>
                 ) : (
-                    <div className="bg-[#1a1a1a] h-10 flex items-center w-full max-w-3xl mx-auto rounded">
-                        <Search />
-                        <input
-                            type="text"
-                            placeholder="Search Products"
-                            className="bg-transparent tracking-tight opacity-75 w-full px-2 text-sm outline-none border-none placeholder-gray-400"
-                        />
-                        <button onClick={handleClickSearch} className="hover:text-gray-400 text-gray-100 text-lg px-3">✖</button>
-                    </div>
+                    <SearchBar onClose={handleClickSearch} />
                 )}
             </div>
         </header>
