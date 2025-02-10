@@ -5,6 +5,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { ShoppingCart } from "lucide-react";
+import { Search } from "lucide-react";
 
 export default function Header() {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -33,7 +34,7 @@ export default function Header() {
                                 {pathname === href && (
                                     <motion.div
                                         layoutId="underline"
-                                        className="absolute bottom-[4px] left-0 right-0 bottom-0 h-0.5 bg-white"
+                                        className="absolute bottom-[-2px] left-0 right-0 bottom-0 h-0.5 bg-white"
                                         transition={{ type: "spring", stiffness: 300, damping: 30 }}
                                     />
                                 )}
@@ -48,11 +49,11 @@ export default function Header() {
                     </nav>
                 ) : (
                     <div className="bg-[#1a1a1a] h-10 flex items-center w-full max-w-3xl mx-auto rounded">
-                        <span className="text-gray-400 text-lg px-3">🔍</span>
+                        <Search />
                         <input
                             type="text"
                             placeholder="Search Products"
-                            className="bg-transparent text-white w-full px-2 text-sm outline-none border-none placeholder-gray-400"
+                            className="bg-transparent tracking-tight opacity-75 w-full px-2 text-sm outline-none border-none placeholder-gray-400"
                         />
                         <button onClick={handleClickSearch} className="hover:text-gray-400 text-gray-100 text-lg px-3">✖</button>
                     </div>

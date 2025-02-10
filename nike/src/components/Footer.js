@@ -2,7 +2,7 @@ import { Facebook, Twitter, Instagram } from "lucide-react";
 
 export default function Footer() {
     return (
-        <footer className="grid grid-cols-3 items-center px-8 py-4 text-gray-400">
+        <footer className="grid grid-cols-3 h-[100px] items-center px-8 py-4 text-gray-400">
             <p className="text-sm">© 2020 Factory - All Rights Reserved.</p>
             <div className="flex justify-center gap-4">
                 <a href="https://facebook.com" target="_blank" 
@@ -24,4 +24,3 @@ export default function Footer() {
         </footer>
     );
 }
-

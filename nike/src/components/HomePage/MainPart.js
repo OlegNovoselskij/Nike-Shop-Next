@@ -17,9 +17,9 @@ export default function HeroSection() {
       <motion.div
         className="absolute inset-0"
         style={{
-          backgroundImage: "url('/mainPageBackgrd.jpg')",
-          backgroundPosition: "center",
-          backgroundSize: "cover",
+          backgroundImage: "url('/mainnnn.jpg')",
+          backgroundPosition: "bottom",
+          backgroundSize: "",
         }}
       />
 
