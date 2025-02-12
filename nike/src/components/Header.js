@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import Link from "next/link";
 import SearchButton from "./Search";
 import { useState } from "react";
@@ -6,30 +6,36 @@ import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { ShoppingCart } from "lucide-react";
 import SearchBar from "./SearchBar";
+import AuthButton from "./Auth/AuthButton";
 
 export default function Header() {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const pathname = usePathname();
 
     function handleClickSearch() {
-        setIsSearchOpen(prev => !prev);
+        setIsSearchOpen((prev) => !prev);
     }
 
     const navLinks = [
         { href: "/", label: "HOME" },
         { href: "/shop", label: "SHOP" },
         { href: "/aboutus", label: "ABOUT US" },
-        { href: "/contactus", label: "CONTACT US" }
     ];
 
     return (
         <header className="bg-black text-white py-4 px-8 flex items-center justify-center fixed top-0 w-full z-50">
             <div className="flex items-center justify-between w-2/3">
-                <Link href='/'><h1 className="text-lg font-bold">FACTORY</h1></Link>
+                <Link href="/">
+                    <h1 className="text-lg font-bold">FACTORY</h1>
+                </Link>
                 {!isSearchOpen ? (
-                    <nav className="relative flex space-x-8">
+                    <nav className="relative flex space-x-8 items-center">
                         {navLinks.map(({ href, label }) => (
-                            <Link key={href} href={href} className="relative font-medium tracking-tight hover:opacity-75">
+                            <Link
+                                key={href}
+                                href={href}
+                                className="relative font-medium tracking-tight hover:opacity-75"
+                            >
                                 {label}
                                 {pathname === href && (
                                     <motion.div
@@ -40,11 +46,13 @@ export default function Header() {
                                 )}
                             </Link>
                         ))}
-                        <div className="flex text-xl space-x-1 gap-3">
+
+                        <div className="flex text-xl space-x-4 gap-3 items-center">
                             <SearchButton handleClickSearch={handleClickSearch} />
-                            <Link href='/cart'>
+                            <Link href="/cart">
                                 <ShoppingCart />
                             </Link>
+                            <AuthButton />
                         </div>
                     </nav>
                 ) : (

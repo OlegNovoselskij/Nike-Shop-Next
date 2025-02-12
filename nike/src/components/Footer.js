@@ -1,6 +1,6 @@
 import { Facebook, Twitter, Instagram } from "lucide-react";
 
-export default function Footer() {
+export function Footer() {
     return (
         <footer className="grid grid-cols-3 h-[100px] items-center px-8 py-4 text-gray-400">
             <p className="text-sm">© 2020 Factory - All Rights Reserved.</p>
