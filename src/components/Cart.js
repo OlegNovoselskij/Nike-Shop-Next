@@ -25,7 +25,6 @@ const CartSidebar = () => {
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
           className="fixed right-0 top-0 w-96 h-full bg-black text-white p-6 shadow-lg flex flex-col z-[9999] border-l-4 border-white"
         >
-          {/* Header with title and close button */}
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-semibold text-white">My Cart</h2>
             <button
@@ -36,7 +35,6 @@ const CartSidebar = () => {
             </button>
           </div>
 
-          {/* Cart content */}
           <div className="flex-grow flex flex-col items-center">
             {cartItems.length === 0 ? (
               <div className="text-center">

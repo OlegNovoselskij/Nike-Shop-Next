@@ -13,7 +13,7 @@ model User {
   email     String   @unique
   password  String
   role UserRole @default(USER)
-  verified DateTime
+  verified DateTime?
 
   provider String?
   providerId String?
@@ -21,6 +21,7 @@ model User {
   carts Cart?
   orders Order[]
   verificationCode VerificationCode?
+  recentlyViewed RecentlyViewed[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -42,6 +43,7 @@ model Product {
   category   Category  @relation(fields: [categoryId], references: [id]) 
   categoryId Int
   cartItems  CartItem[] 
+  viewedBy    RecentlyViewed[]
 
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
@@ -106,6 +108,19 @@ model VerificationCode {
 
     createdAt  DateTime  @default(now())
 }
+
+model RecentlyViewed {
+  id        String  @id @default(cuid())
+  userId    Int
+  productId Int
+  viewedAt  DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+  @@unique([userId, productId])
+}
+
+
 
 enum OrderStatus {
     PENDING

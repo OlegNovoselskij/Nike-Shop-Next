@@ -5,11 +5,11 @@ const prisma = new PrismaClient();
 
 export async function GET(req, { params }) {
     const { slug } = params;
-    console.log("Fetching product with slug:", slug); // ✅ Додано логування
+    console.log("Fetching product with slug:", slug);
 
     try {
         const product = await prisma.product.findUnique({
-            where: { id: parseInt(slug) }, // 🔥 Виправлено: id має бути числом
+            where: { id: parseInt(slug) },
         });
 
         if (!product) {

@@ -1,5 +1,3 @@
-
-// Компонент окремого продукту
 function ProductItem({handleClickOnProduct, id, image, title, price }) {
     return (
         <div onClick={() => handleClickOnProduct(id)} className="p-4 text-white text-left cursor-pointer">
@@ -11,7 +9,7 @@ function ProductItem({handleClickOnProduct, id, image, title, price }) {
                 />
             </div>
             <h3 className="text-lg font-semibold mt-2">{title}</h3>
-            <p className="text-sm">{price}</p>
+            <p className="text-sm">${parseFloat(price.toFixed(2))}</p>
         </div>
     );
     
