@@ -36,7 +36,6 @@ export default function SearchBar({ onClose }) {
                 onKeyDown={handleKeyDown}
                 className="bg-transparent tracking-tight opacity-75 w-full px-2 text-sm outline-none border-none placeholder-gray-400"
             />
-            <button onClick={handleSearch} className="hover:text-gray-400 text-gray-100 text-lg px-3">🔍</button>
             <button onClick={onClose} className="hover:text-gray-400 text-gray-100 text-lg px-3">✖</button>
 
             {results.length > 0 && (
@@ -47,7 +46,7 @@ export default function SearchBar({ onClose }) {
                         </Link>
                     ))}
                 </div>
-            )}
+            )}  
         </div>
     );
 }

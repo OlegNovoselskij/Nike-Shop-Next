@@ -1,7 +1,11 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Header from "../components/Header"; // Імпорт Header
-import Footer from "@/components/Footer";
+import Header from "../components/Header";
+import { Footer } from "@/components";
+import NextTopLoader from "nextjs-toploader";
+import SessionWrapper from "@/components/SessionWrapper";
+import AuthModal from "@/components/Auth/Auth-Modal/AuthModal";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -20,12 +24,14 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Header /> {/* Додавання Header */}
-        {children}
-        <Footer/>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <NextTopLoader />
+        <SessionWrapper>
+        <AuthModal />
+          <Header />
+          {children}
+          <Footer />
+        </SessionWrapper>
       </body>
     </html>
   );
