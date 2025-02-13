@@ -2,18 +2,25 @@
 import { ShoppingCart } from "lucide-react";
 import Button from "@/components/ui/Button";
 import { redirect } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { addToCart } from "@/store/cart-slice"; 
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, increaseQuantity, decreaseQuantity } from "@/store/cart-slice"; 
 import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import Loading from "../loading";
 import { getProduct } from "@/http";
+import IncDec from "@/components/ui/IncDec";
 
 const Product = () => {
   const dispatch = useDispatch();
   const { slug } = useParams();
   const [product, setProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [quentity, setQuentity] = useState(1); // Додаємо локальний стан для кількості
+
+  const cartItem = useSelector((state) =>
+    state.cart.itemList.find((item) => item.id === product?.id)
+  );
+  const cartQuantity = cartItem ? cartItem.quantity : 0;
 
   useEffect(() => {
     async function fetchProduct() {
@@ -36,15 +43,34 @@ const Product = () => {
     });
   };
 
+  function handleIncrease() {
+    if (cartQuantity > 0) {
+      dispatch(increaseQuantity({ id: product.id }));
+    } else {
+      setQuentity((prev) => prev + 1);
+    }
+  }
+
+  function handleDecrease() {
+    if (cartQuantity > 0) {
+      dispatch(decreaseQuantity({ id: product.id }));
+    } else if (quentity > 1) {
+      setQuentity((prev) => prev - 1);
+    }
+  }
+
   function handleAddToCart() {
     if (product) {
-      dispatch(addToCart({
-        name: product.name,
-        price: product.price,
-        totalPrice: product.price,
-        id: product.id,
-        image: product.imageUrl,
-      }));
+      dispatch(
+        addToCart({
+          name: product.name,
+          price: product.price,
+          totalPrice: product.price * quentity,
+          id: product.id,
+          image: product.imageUrl,
+          quantity: quentity,
+        })
+      );
     }
   }
 
@@ -75,12 +101,15 @@ const Product = () => {
 
           <div>
             <label className="block text-gray-400 text-2xl mb-2">Quantity</label>
-            <input
-              placeholder="1"
-              type="number"
-              className="w-[140px] p-3 bg-[#181818] border border-gray-700 text-white text-left appearance-none"
+            <IncDec 
+              glovalDiv="flex items-center"
+              innerDiv="flex items-center bg-[#181818] border border-gray-700 rounded-full px-6 py-1"
+              quentity={cartQuantity > 0 ? cartQuantity : quentity} // Відображаємо або з кошика, або локальне значення
+              handleIncrease={handleIncrease}
+              handleDecrease={handleDecrease}
             />
           </div>
+
           <div onClick={handleAddToCart}>
             <Button className="bg-[#484444] font-family-aktiv-grotesk hover:bg-gray-600 text-white py-3 px-6 text-lg flex items-center gap-2">
               <ShoppingCart size={20} /> ADD TO CART

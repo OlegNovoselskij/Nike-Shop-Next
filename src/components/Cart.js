@@ -1,15 +1,13 @@
 import { ShoppingCart, X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { setShowCart } from "@/store/cart-slice";
+import { setShowCart, increaseQuantity, decreaseQuantity } from "@/store/cart-slice"; 
 import { motion, AnimatePresence } from "framer-motion";
+import IncDec from "./ui/IncDec"; // Використовуємо IncDec
 
 const CartSidebar = () => {
   const dispatch = useDispatch();
   const showCart = useSelector((state) => state.cart.showCart);
-  const cartItems = useSelector((state) => state.cart.itemList); // Retrieve cart items from Redux store
-  console.log(`dasda${cartItems}`);
-  
-  
+  const cartItems = useSelector((state) => state.cart.itemList);
 
   function handleCartClick() {
     dispatch(setShowCart());
@@ -46,21 +44,20 @@ const CartSidebar = () => {
                 <ul className="divide-y divide-gray-700">
                   {cartItems.map((item) => (
                     <li key={item.id} className="flex justify-between items-center py-4">
-
-                      <div className="flex items-center ">
+                      <div className="flex items-center">
                         <img src={item.image} alt={item.name} className="w-16 h-16 object-cover rounded-md" />
                         <span className="text-white font-medium ml-1">{item.name}</span>
                       </div>
 
-                      <div className="flex items-center ml-4">
-                        <div className="flex items-center bg-[#181818] border border-gray-700 rounded-full px-0 py-1">
-                          <button className="text-white text-lg px-1">-</button>
-                          <span className="text-white px-2">{item.quantity}</span>
-                          <button className="text-white text-lg px-1">+</button>
-                        </div>
+                      <div className="ml-4">
+                        <IncDec 
+                          glovalDiv={"flex items-center"} 
+                          innerDiv={"flex items-center bg-[#181818] border border-gray-700 rounded-full px-0 py-1"} 
+                          quentity={item.quantity} 
+                          handleIncrease={() => dispatch(increaseQuantity({ id: item.id }))} 
+                          handleDecrease={() => dispatch(decreaseQuantity({ id: item.id }))} 
+                        />
                       </div>
-
-
                       <span className="font-semibold ml-2">{item.totalPrice.toFixed(2)}$</span>
                     </li>
                   ))}

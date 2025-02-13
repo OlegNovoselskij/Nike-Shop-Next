@@ -11,40 +11,45 @@ const cartSlice = createSlice({
       const existingItem = state.itemList.find((item) => item.id === newItem.id);
       
       if (existingItem) {
-        existingItem.quantity++;
+        existingItem.quantity += newItem.quantity;
         existingItem.totalPrice = existingItem.price * existingItem.quantity;
       } else {
         state.itemList.push({
           name: newItem.name,
           price: newItem.price,
-          totalPrice: newItem.price,
+          totalPrice: newItem.price * newItem.quantity,
           id: newItem.id,
-          quantity: 1,
+          quantity: newItem.quantity,
           image: newItem.image
         });
       }
-      
-      console.log("Updated cart:", state.itemList); // Додаємо логування
     },
-    
-    removeFromCart(state, action) {
-      const findItem = state.itemList.find(
-        (item) => item.id === action.payload.id
-      );
-      if (findItem.quantity === 1) {
-        state.itemList = state.itemList.filter(
-          (item) => item.id != action.payload.id
-        );
-      } else {
-        findItem.quantity--;
-        findItem.totalPrice -= findItem.price;
+
+    increaseQuantity(state, action) {
+      const item = state.itemList.find((item) => item.id === action.payload.id);
+      if (item) {
+        item.quantity++;
+        item.totalPrice = item.price * item.quantity;
       }
     },
+
+    decreaseQuantity(state, action) {
+      const item = state.itemList.find((item) => item.id === action.payload.id);
+      if (item && item.quantity > 1) {
+        item.quantity--;
+        item.totalPrice = item.price * item.quantity;
+      }
+    },
+
+    removeFromCart(state, action) {
+      state.itemList = state.itemList.filter((item) => item.id !== action.payload.id);
+    },
+
     setShowCart(state) {
       state.showCart = !state.showCart;
     },
   },
 });
 
-export const { addToCart, removeFromCart, setShowCart } = cartSlice.actions;
+export const { addToCart, removeFromCart, increaseQuantity, decreaseQuantity, setShowCart } = cartSlice.actions;
 export default cartSlice.reducer;

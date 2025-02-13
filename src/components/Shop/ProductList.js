@@ -5,7 +5,7 @@ import { getAllProducts } from '@/http';
 import Loading from './loading';
 import { useRouter } from 'next/navigation';
 
-function ProductList({ selectedCategory }) {
+function ProductList({ selectedCategory, selectedSort }) {
     const [products, setProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const router = useRouter();
@@ -29,7 +29,18 @@ function ProductList({ selectedCategory }) {
         );
     }
 
-    const filteredProducts = selectedCategory ? products.filter(item => item.categoryId === selectedCategory) : products;
+    let filteredProducts = selectedCategory ? products.filter(item => item.categoryId === selectedCategory) : products;
+
+    // 🔽 Сортування
+    if (selectedSort === "Name (A-Z)") {
+        filteredProducts = [...filteredProducts].sort((a, b) => a.name.localeCompare(b.name));
+    } else if (selectedSort === "Name (Z-A)") {
+        filteredProducts = [...filteredProducts].sort((a, b) => b.name.localeCompare(a.name));
+    } else if (selectedSort === "Price (low to high)") {
+        filteredProducts = [...filteredProducts].sort((a, b) => a.price - b.price);
+    } else if (selectedSort === "Price (high to low)") {
+        filteredProducts = [...filteredProducts].sort((a, b) => b.price - a.price);
+    }
 
     return (
         <div className="grid grid-cols-4 gap-4">
