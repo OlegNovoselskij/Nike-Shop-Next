@@ -1,10 +1,12 @@
-import ShopPage from "@/components/Shop/ShopPage"
-import ShopHeader from "@/components/Shop/ShopHeader"
+import { Suspense } from "react";
+import ShopPage from "@/components/Shop/ShopPage";
 
 export default function Shop() {
-    return (
-        <>
+  return (
+    <>
+      <Suspense fallback={<div>Loading...</div>}>
         <ShopPage />
-        </>
-    )
+      </Suspense>
+    </>
+  );
 }
