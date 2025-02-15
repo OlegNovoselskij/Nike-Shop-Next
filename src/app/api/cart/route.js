@@ -1,9 +1,12 @@
 import { PrismaClient } from "@prisma/client";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { NextResponse } from "next/server";
+
+const prisma = new PrismaClient();
 
 async function getSession(req) {
-    const session = await getServerSession(req, authOptions);
+    const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
         throw new Error("User not authenticated");
     }
@@ -12,41 +15,38 @@ async function getSession(req) {
 
 export async function GET(req) {
     try {
-        const user = await getSession(req);  // Перевірка чи користувач автентифікований
-        const cart = await PrismaClient.cart.findUnique({
+        const user = await getSession(req);
+        const cart = await prisma.cart.findUnique({
             where: { userId: user.id },
             include: { items: true },
         });
-        
-        return new Response(JSON.stringify(cart), { status: 200 });
+
+        return NextResponse.json(cart);
     } catch (error) {
-        return new Response(error.message, { status: 403 });
+        return NextResponse.json({ error: error.message }, { status: 403 });
     }
 }
 
 export async function POST(req) {
     try {
-        const user = await getSession(req);  // Перевірка чи користувач автентифікований
+        const user = await getSession(req);
         const { productId, quantity } = await req.json();
 
-        // Перевірка чи продукт вже є в кошику
-        const existingCartItem = await PrismaClient.cartItem.findFirst({
+        const existingCartItem = await prisma.cartItem.findFirst({
             where: { cartId: user.id, productId },
         });
 
         if (existingCartItem) {
-            // Якщо товар є, оновлюємо кількість
-            await PrismaClient.cartItem.update({
+            await prisma.cartItem.update({
                 where: { id: existingCartItem.id },
                 data: { quantity: existingCartItem.quantity + quantity },
             });
         } else {
-            // Якщо товару немає в кошику, додаємо новий
-            const cart = await PrismaClient.cart.findUnique({
+            const cart = await prisma.cart.findUnique({
                 where: { userId: user.id },
             });
 
-            await PrismaClient.cartItem.create({
+            await prisma.cartItem.create({
                 data: {
                     productId,
                     cartId: cart.id,
@@ -55,31 +55,30 @@ export async function POST(req) {
             });
         }
 
-        return new Response("Item added to cart", { status: 200 });
+        return NextResponse.json({ message: "Item added to cart" });
     } catch (error) {
-        return new Response(error.message, { status: 403 });
+        return NextResponse.json({ error: error.message }, { status: 403 });
     }
 }
 
 export async function DELETE(req) {
     try {
-        const user = await getSession(req);  // Перевірка чи користувач автентифікований
+        const user = await getSession(req);
         const { productId } = await req.json();
-        
-        // Видаляємо товар з кошика
-        const cart = await PrismaClient.cart.findUnique({
+
+        const cart = await prisma.cart.findUnique({
             where: { userId: user.id },
         });
 
-        await PrismaClient.cartItem.deleteMany({
+        await prisma.cartItem.deleteMany({
             where: {
                 cartId: cart.id,
                 productId,
             },
         });
 
-        return new Response("Item removed from cart", { status: 200 });
+        return NextResponse.json({ message: "Item removed from cart" });
     } catch (error) {
-        return new Response(error.message, { status: 403 });
+        return NextResponse.json({ error: error.message }, { status: 403 });
     }
 }

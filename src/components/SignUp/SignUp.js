@@ -45,7 +45,7 @@ export default function SignUp() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-zinc-900 text-white px-4">
-      <h1 className="text-3xl font-extrabold text-zinc-500 mb-2">Register</h1>
+      <h1 className="text-6xl font-extrabold text-zinc-500 mb-2">Register</h1>
       <p className="text-lg font-extrabold text-zinc-300 mb-6">Get in Touch</p>
 
       {errorMessage && <p className="text-red-500">{errorMessage}</p>}
